@@ -1,0 +1,65 @@
+<%- include('../partials/header') %>
+
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
+            <h2 class="font-semibold text-slate-800">Daftar Produk</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Total <%= produk.length %> produk</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+                    <tr>
+                        <th class="px-6 py-3 text-left">#</th>
+                        <th class="px-6 py-3 text-left">Nama Produk</th>
+                        <th class="px-6 py-3 text-left">Kategori</th>
+                        <th class="px-6 py-3 text-right">Harga</th>
+                        <th class="px-6 py-3 text-right">Stock</th>
+                        <th class="px-6 py-3 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <% produk.forEach((p, i)=> { %>
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-6 py-4 text-slate-400">
+                                <%= i + 1 %>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="font-medium text-slate-800">
+                                    <%= p.nama_produk %>
+                                </p>
+                                <p class="text-xs text-slate-400">
+                                    <%= p.deskripsi %>
+                                </p>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full text-xs font-medium">
+                                    <%= p.kategori %>
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right font-medium">Rp <%= Number(p.harga).toLocaleString('id-ID')
+                                    %>
+                            </td>
+                            <td
+                                class="px-6 py-4 text-right font-semibold <%= p.jumlah_stock <= 5 ? 'text-red-600' : 'text-slate-800' %>">
+                                <%= p.jumlah_stock %>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <% if (p.jumlah_stock===0) { %>
+                                    <span
+                                        class="bg-red-100 text-red-700 px-2.5 py-1 rounded-full text-xs font-medium">Habis</span>
+                                    <% } else if (p.jumlah_stock <=5) { %>
+                                        <span
+                                            class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full text-xs font-medium">Menipis</span>
+                                        <% } else { %>
+                                            <span
+                                                class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-medium">Tersedia</span>
+                                            <% } %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+<div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+  <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
+    <h2 class="font-semibold text-slate-800">Manajemen Stock</h2>
+    <p class="text-xs text-slate-500 mt-0.5">Kelola jumlah stok setiap produk</p>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+        <tr>
+          <th class="px-6 py-3 text-left">Produk</th>
+          <th class="px-6 py-3 text-right">Harga</th>
+          <th class="px-6 py-3 text-center">Stock</th>
+          <th class="px-6 py-3 text-center">Update Stock</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <% stock.forEach(s => { %>
+        <tr class="hover:bg-slate-50">
+          <td class="px-6 py-4">
+            <p class="font-medium text-slate-800"><%= s.nama_produk %></p>
+            <span class="text-xs text-slate-400"><%= s.kategori %></span>
+          </td>
+          <td class="px-6 py-4 text-right text-slate-600">Rp <%= Number(s.harga).toLocaleString('id-ID') %></td>
+          <td class="px-6 py-4 text-center">
+            <span class="text-lg font-bold <%= s.jumlah_stock === 0 ? 'text-red-600' : s.jumlah_stock <= 5 ? 'text-amber-600' : 'text-emerald-600' %>">
+              <%= s.jumlah_stock %>
+            </span>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <form method="POST" action="/stock/<%= s.id %>?_method=PUT" class="flex items-center justify-center gap-2">
+              <input type="number" name="jumlah_stock" value="<%= s.jumlah_stock %>" min="0"
+                class="w-20 border border-slate-200 rounded-lg px-2 py-1.5 text-sm text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
+              <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">
+                Simpan
+              </button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

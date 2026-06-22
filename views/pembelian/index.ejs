@@ -1,0 +1,74 @@
+<%- include('../partials/header') %>
+
+    <div class="mb-4 flex justify-between items-center">
+        <h2 class="text-slate-600 text-sm">Daftar semua transaksi pembelian</h2>
+        <a href="/pembelian/tambah"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+            + Tambah Pembelian
+        </a>
+    </div>
+
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+                <tr>
+                    <th class="px-6 py-3 text-left">Kode</th>
+                    <th class="px-6 py-3 text-left">Pembeli</th>
+                    <th class="px-6 py-3 text-left">Produk</th>
+                    <th class="px-6 py-3 text-right">Qty</th>
+                    <th class="px-6 py-3 text-right">Total</th>
+                    <th class="px-6 py-3 text-center">Status</th>
+                    <th class="px-6 py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <% if (pembelian.length===0) { %>
+                    <tr>
+                        <td colspan="7" class="px-6 py-12 text-center text-slate-400">
+                            Tidak ada data pembelian
+                        </td>
+                    </tr>
+                    <% } %>
+                        <% pembelian.forEach(p=> { %>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-6 py-4 font-mono text-xs">
+                                    <%= p.kode_pembelian %>
+                                </td>
+                                <td class="px-6 py-4 font-medium">
+                                    <%= p.nama_pembeli %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= p.nama_produk %>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <%= p.jumlah %>
+                                </td>
+                                <td class="px-6 py-4 text-right">Rp <%= Number(p.total_harga).toLocaleString('id-ID') %>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium
+            <%= p.status === 'pending' ? 'bg-amber-100 text-amber-700' : '' %>
+            <%= p.status === 'diproses' ? 'bg-blue-100 text-blue-700' : '' %>
+            <%= p.status === 'selesai' ? 'bg-emerald-100 text-emerald-700' : '' %>
+            <%= p.status === 'dibatalkan' ? 'bg-red-100 text-red-700' : '' %>">
+                                        <%= p.status %>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <% if (p.status !=='dibatalkan' && p.status !=='selesai' ) { %>
+                                        <form method="POST" action="/pembelian/<%= p.id %>/cancel?_method=PUT"
+                                            onsubmit="return confirm('Batalkan pembelian ini?')">
+                                            <button type="submit"
+                                                class="text-red-500 hover:text-red-700 text-xs font-medium">
+                                                Batalkan
+                                            </button>
+                                        </form>
+                                        <% } %>
+                                </td>
+                            </tr>
+                            <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <%- include('../partials/footer') %>
